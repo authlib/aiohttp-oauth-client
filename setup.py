@@ -23,7 +23,7 @@ setup(
     platforms='any',
     long_description=readme,
     license='BSD-3-Clause',
-    install_requires=['Authlib==0.12'],
+    install_requires=['Authlib==0.12', 'aiohttp'],
     project_urls={
         'Website': 'https://authib.org/',
         'Blog': 'https://blog.authlib.org/',
