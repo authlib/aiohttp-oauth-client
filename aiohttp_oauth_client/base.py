@@ -1,5 +1,5 @@
 from yarl import URL
-from aiohttp import ClientRequest, ClientSession
+from aiohttp import ClientRequest
 from authlib.client.errors import OAuthError
 
 
@@ -22,13 +22,6 @@ class OAuth2Request(ClientRequest):
 
 
 class ClientMixin(object):
-    request_class = OAuth2Request
-
-    @classmethod
-    def create(cls, **kwargs):
-        session = ClientSession(request_class=cls.request_class)
-        return cls(session, **kwargs)
-
     async def __aenter__(self):
         return self
 

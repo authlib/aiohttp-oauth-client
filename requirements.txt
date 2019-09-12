@@ -1,0 +1,2 @@
+aiohttp
+Authlib==0.12

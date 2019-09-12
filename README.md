@@ -1,14 +1,22 @@
-# Authlib for aiohttp
+# aiohttp OAuth Clients
 
 
-## OAuth 1.0
+## OAuth 1.0 Client
 
 ```python
-from authlib_aiohttp import OAuth1Client
+from aiohttp_oauth_client import OAuth1Client
+```
 
 
-async def fetch_request_token():
-    request_token_url = 'https://api.twitter.com/oauth/request_token'
-    async with OAuth1Client.create() as client:
-        request_token = await client.fetch_request_token(request_token_url)
+## OAuth 2.0 Client
+
+```python
+from aiohttp_oauth_client import OAuth2Client
+```
+
+
+## OAuth 2.0 Assertion
+
+```python
+from aiohttp_oauth_client import AssertionClient
 ```

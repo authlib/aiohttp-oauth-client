@@ -1,5 +1,6 @@
+from aiohttp import ClientSession
 from authlib.oauth2.client import OAuth2Client as _OAuth2Client
-from .base import ClientMixin
+from .base import ClientMixin, OAuth2Request
 
 
 class OAuth2Client(ClientMixin, _OAuth2Client):
@@ -17,6 +18,22 @@ class OAuth2Client(ClientMixin, _OAuth2Client):
         'verify_ssl', 'fingerprint', 'ssl_context', 'ssl',
         'proxy_headers', 'trace_request_ctx',
     )
+
+
+    def __init__(self, client_id=None, client_secret=None,
+                 token_endpoint=None, token_endpoint_auth_method=None,
+                 scope=None, redirect_uri=None,
+                 token=None, token_placement='header', token_updater=None, **kwargs):
+        session = ClientSession(request_class=OAuth2Request)
+        _OAuth2Client.__init__(
+            self, session=session,
+            client_id=client_id, client_secret=client_secret,
+            client_auth_method=token_endpoint_auth_method,
+            refresh_token_url=token_endpoint,
+            scope=scope, redirect_uri=redirect_uri,
+            token=token, token_placement=token_placement,
+            token_updater=token_updater, **kwargs
+        )
 
     async def _fetch_token(self, url, body='', headers=None, auth=None,
                            method='POST', **kwargs):
