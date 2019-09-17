@@ -1,16 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
-from setuptools import setup, find_packages
+import re
+from setuptools import setup
 
 with open('README.rst') as f:
     readme = f.read()
 
 
+with open('aiohttp_oauth_client/__init__.py') as f:
+    version = re.search(r'__version__ = "(.*?)"', f.read()).group(1)
+
+
 setup(
     name='aiohttp-oauth-client',
-    version='0.1.0',
+    version=version,
     author='Hsiaoming Yang',
     author_email='me@lepture.com',
     url='https://github.com/authlib/aiohttp-oauth-client',
