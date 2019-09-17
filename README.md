@@ -71,7 +71,6 @@ def create_authorization_url(request_token):
     authenticate_url = 'https://api.twitter.com/oauth/authenticate'
     client = OAuth1Client(client_id, client_secret)
     url = client.create_authorization_url(authenticate_url, request_token['oauth_token'])
-    client.close()
     return url
 ```
 
@@ -84,6 +83,16 @@ https://api.twitter.com/oauth/authenticate?oauth_token=Ih....Jw
 
 Then visit this URL with your browser, and approve the request. Twitter
 will redirect back to your default `redirect_uri` you registered in Twitter.
+
+If you want to redirect to your specified URL, rewrite the code like:
+
+```py
+def create_authorization_url(request_token):
+    authenticate_url = 'https://api.twitter.com/oauth/authenticate'
+    client = OAuth1Client(client_id, client_secret, redirect_uri='https://your-defined-url')
+    url = client.create_authorization_url(authenticate_url, request_token['oauth_token'])
+    return url
+```
 
 ### 3. Fetch Access Token
 
@@ -105,6 +114,10 @@ async def fetch_access_token(request_token, oauth_verifier):
         session.token = request_token
         token = await session.fetch_access_token(url, oauth_verifier)
         return token
+
+
+# if you specified redirect_uri in previous step, create the session with
+# OAuth1Client(client_id, client_secret, redirect_uri='....')
 ```
 
 We can test this function with:
