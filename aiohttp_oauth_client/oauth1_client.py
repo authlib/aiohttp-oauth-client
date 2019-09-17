@@ -50,6 +50,26 @@ class OAuth1Client(ClientMixin, _OAuth1Client):
             signature_method=signature_method, signature_type=signature_type,
             force_include_body=force_include_body, **kwargs)
 
+    async def fetch_access_token(self, url, verifier=None, **kwargs):
+        """Method for fetching an access token from the token endpoint.
+
+        This is the final step in the OAuth 1 workflow. An access token is
+        obtained using all previously obtained credentials, including the
+        verifier from the authorization step.
+
+        :param url: Access Token endpoint.
+        :param verifier: A verifier string to prove authorization was granted.
+        :param kwargs: Extra parameters to include for fetching access token.
+        :return: A token dict.
+        """
+        if verifier:
+            self.auth.verifier = verifier
+        if not self.auth.verifier:
+            self.handle_error('missing_verifier', 'Missing "verifier" value')
+        token = await self._fetch_token(url, **kwargs)
+        self.auth.verifier = None
+        return token
+
     async def _fetch_token(self, url, **kwargs):
         async with self.post(url, **kwargs) as resp:
             text = await resp.text()
